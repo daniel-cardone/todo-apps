@@ -1,0 +1,31 @@
+{
+  "name": "todo-app-express",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "watch": "run-p watch-pug watch-sass watch-ts",
+    "watch-pug": "pug src -o public -w",
+    "watch-sass": "sass --watch src:public",
+    "watch-ts": "tsc -w",
+    "dev": "nodemon",
+    "start": "node app.js"
+  },
+  "author": "daniel-cardone",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "npm-run-all": "^4.1.5",
+    "pug-cli2": "^1.0.0-alpha6.1",
+    "sass": "^1.64.2",
+    "typescript": "^5.1.6"
+  },
+  "overrides": {
+    "pug-cli2": {
+      "pug": "~3.0.2"
+    }
+  }
+}
