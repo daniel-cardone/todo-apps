@@ -6,7 +6,8 @@ html(lang="en")
         main
             p #[span#itemCount (Loading)] items in progress
             .flex-row
-                input#itemInput(placeholder="New task...")
+                input#itemInput(placeholder="New task...", maxlength="100")
                 button#addItemBtn Add
+            p#infoText
             #todoList
         include include/_footer
