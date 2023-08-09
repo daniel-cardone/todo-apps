@@ -4,4 +4,9 @@ html(lang="en")
     body
         include include/_header
         main
+            p #[span#itemCount (Loading)] items in progress
+            .flex-row
+                input#itemInput(placeholder="New task...")
+                button#addItemBtn Add
+            #todoList
         include include/_footer
