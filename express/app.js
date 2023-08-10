@@ -1,8 +1,11 @@
 const express = require("express");
+const functions = require("firebase-functions");
 const fs = require("fs");
+const { tmpdir } = require("os");
+const path = require("path");
 const { v4: uuidv4 } = require("uuid");
 const app = express();
-const PORT = process.env.PORT || 3000;
+const DATA_FILE = path.join(tmpdir(), "data.json");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -32,15 +35,15 @@ function validateTaskUpdateData(body, taskName=null) {
 }
 
 function readData() {
-    if (!fs.existsSync("data.json")) {
-        fs.writeFileSync("data.json", "{}");
+    if (!fs.existsSync(DATA_FILE)) {
+        fs.writeFileSync(DATA_FILE, "{}");
     }
 
-    return JSON.parse(fs.readFileSync("data.json", "utf-8"));
+    return JSON.parse(fs.readFileSync(DATA_FILE, "utf-8"));
 }
 
 function saveData() {
-    fs.writeFileSync("data.json", JSON.stringify(userData, null, 4));
+    fs.writeFileSync(DATA_FILE, JSON.stringify(userData, null, 4));
 }
 
 function attemptSave() {
@@ -150,6 +153,4 @@ app.post("/rename", (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}.`);
-});
+exports.app = functions.https.onRequest(app);
