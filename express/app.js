@@ -23,8 +23,10 @@ function validateNewTaskData(body) {
     return true;
 }
 
-function validateTaskUpdateData(body) {
+function validateTaskUpdateData(body, taskName=null) {
     const { username, taskId } = body;
+
+    if (taskName !== null && (typeof taskName !== "string" || taskName.length > 100)) return false;
 
     return username && userData[username] && taskId && userData[username][taskId];
 }
@@ -124,6 +126,22 @@ app.post("/delete", (req, res) => {
     }
 
     delete userData[username][taskId];
+
+    if (attemptSave()) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(500);
+    }
+});
+
+app.post("/rename", (req, res) => {
+    const { username, taskId, taskName } = req.body;
+    if (!validateTaskUpdateData(req.body, taskName)) {
+        res.sendStatus(400);
+        return;
+    }
+
+    userData[username][taskId].taskName = taskName;
 
     if (attemptSave()) {
         res.sendStatus(200);

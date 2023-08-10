@@ -151,7 +151,22 @@ type TaskUpdateMethod = "complete" | "delete" | "reset";
         });
 
         editBtn.addEventListener("click", () => {
+            const h3 = todoListItem.querySelector("h3") as HTMLHeadingElement;
+            h3.innerHTML = `
+                <div class="task-input-container flex-row">
+                    <input value="${h3.textContent}" maxlength="100" />
+                    <button>Update</button>
+                </div>
+            `;
 
+            const newValueInput = h3.querySelector("input") as HTMLInputElement;
+            const updateBtn = h3.querySelector("button") as HTMLButtonElement;
+            updateBtn.addEventListener("click", () => {
+                if (newValueInput.value.length < 1) return;
+
+                h3.textContent = newValueInput.value;
+                renameTask(todoListItem, h3.textContent);
+            });
         });
 
         deleteBtn.addEventListener("click", () => {
@@ -188,6 +203,31 @@ type TaskUpdateMethod = "complete" | "delete" | "reset";
                 }
 
                 infoTextP.textContent = "TODO item updated!";
+                infoTextP.classList.add("success");
+            });
+    }
+
+    function renameTask(element: HTMLDivElement, taskName: string) {
+        fetch("/rename", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify({
+                username: localStorage.getItem("username"),
+                taskId: element.dataset.taskId,
+                taskName
+            })
+        })
+            .then(res => {
+                if (res.status !== 200) {
+                    infoTextP.textContent = "There was an error editing your TODO item.";
+                    infoTextP.classList.remove("success");
+                    return;
+                }
+
+                infoTextP.textContent = "TODO item renamed!";
                 infoTextP.classList.add("success");
             });
     }
