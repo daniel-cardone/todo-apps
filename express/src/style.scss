@@ -3,6 +3,8 @@ $secondary: #87d68d;
 $base: #f2f0f9;
 $gray: #bbb4b9;
 $dark: #373737;
+$error: #ff4d2d;
+$success: #419f71;
 
 @import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
 
@@ -70,17 +72,129 @@ main {
   margin: 0 auto;
 }
 
+#taskAdder {
+  input {
+    font-size: 1.25em;
+    color: $dark;
+    border: 1px solid $gray;
+    border-right: none;
+    border-radius: 0.25rem 0 0 0.25rem;
+    outline: none;
+    &::placeholder {
+      color: $gray;
+      font-size: 0.75em;
+      opacity: 0.8;
+    }
+  }
+
+  button {
+    font-size: 1.125em;
+    background: $secondary;
+    color: $base;
+    border: none;
+    border-radius: 0 0.25rem 0.25rem 0;
+    cursor: pointer;
+  }
+}
+
 #infoText {
   margin: 0.25rem;
-  color: #ff4d2d;
+  color: $error;
   &.success {
-    color: #419f71;
+    color: $success;
+  }
+  &:empty:before {
+    content: ' ';
+    white-space: pre;
+  }
+}
+
+.filter {
+  width: 100%;
+  text-align: center;
+  .filter-btns {
+    margin: 0.75rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    button {
+      padding: 0.25rem 0.75rem;
+      background: $gray;
+      color: $base;
+      border: none;
+      border-radius: 0.25rem;
+      font-size: 1.125em;
+      cursor: pointer;
+    }
   }
 }
 
 #todoList {
   display: flex;
   flex-direction: column;
+}
+
+.todo-item {
+  padding: 1rem;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: lighten($gray, 20%);
+  box-sizing: border-box;
+  .status-indicator {
+    margin: 0;
+    padding: 0.5rem;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    border-radius: 0.5em;
+    font-weight: bold;
+    color: $base;
+    &.in-progress {
+      background: $gray;
+    }
+    &.complete {
+      background: $success;
+    }
+  }
+  h3 {
+    margin: 0 1rem;
+    flex: 1;
+    text-align: left;
+    word-wrap: anywhere;
+  }
+  .task-options {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    button {
+      margin: 0 0.5rem;
+      padding: 0.25rem 0.75rem;
+      color: $base;
+      border: none;
+      border-radius: 0.25rem;
+      cursor: pointer;
+      &.task-complete-btn {
+        background: lighten($success, 20%);
+      }
+      &.task-reset-btn {
+        background: lighten($error, 20%);
+      }
+      &.task-edit-btn {
+        background: mix($gray, $base, 80%);
+      }
+      &.task-delete-btn {
+        background: darken($error, 10%);
+      }
+    }
+  }
+  .task-date {
+    margin: 0;
+    font-size: 0.75em;
+    text-align: right;
+  }
 }
 
 h1 {
@@ -101,29 +215,6 @@ h3 {
   color: $dark;
 }
 
-input {
-  font-size: 1.25em;
-  color: $dark;
-  border: 1px solid $gray;
-  border-right: none;
-  border-radius: 0.25rem 0 0 0.25rem;
-  outline: none;
-  &::placeholder {
-    color: $gray;
-    font-size: 0.75em;
-    opacity: 0.8;
-  }
-}
-
-button {
-  font-size: 1.125em;
-  background: $secondary;
-  color: $base;
-  border: none;
-  border-radius: 0 0.25rem 0.25rem 0;
-  cursor: pointer;
-}
-
 .desktop {
   display: block;
 }
@@ -132,7 +223,29 @@ button {
   display: none;
 }
 
+.hidden {
+  display: none !important;
+}
+
 @media screen and (max-width: 768px) {
+  main {
+    width: 90%;
+  }
+
+  .todo-item {
+    height: auto;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .task-options {
+    width: 100%;
+    .flex-row {
+      width: 100%;
+      justify-content: space-evenly;
+    }
+  }
+
   .desktop {
     display: none !important;
   }

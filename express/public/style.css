@@ -63,6 +63,28 @@ main {
   margin: 0 auto;
 }
 
+#taskAdder input {
+  font-size: 1.25em;
+  color: #373737;
+  border: 1px solid #bbb4b9;
+  border-right: none;
+  border-radius: 0.25rem 0 0 0.25rem;
+  outline: none;
+}
+#taskAdder input::placeholder {
+  color: #bbb4b9;
+  font-size: 0.75em;
+  opacity: 0.8;
+}
+#taskAdder button {
+  font-size: 1.125em;
+  background: #87d68d;
+  color: #f2f0f9;
+  border: none;
+  border-radius: 0 0.25rem 0.25rem 0;
+  cursor: pointer;
+}
+
 #infoText {
   margin: 0.25rem;
   color: #ff4d2d;
@@ -70,10 +92,97 @@ main {
 #infoText.success {
   color: #419f71;
 }
+#infoText:empty:before {
+  content: " ";
+  white-space: pre;
+}
+
+.filter {
+  width: 100%;
+  text-align: center;
+}
+.filter .filter-btns {
+  margin: 0.75rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+.filter .filter-btns button {
+  padding: 0.25rem 0.75rem;
+  background: #bbb4b9;
+  color: #f2f0f9;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1.125em;
+  cursor: pointer;
+}
 
 #todoList {
   display: flex;
   flex-direction: column;
+}
+
+.todo-item {
+  padding: 1rem;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #ece9eb;
+  box-sizing: border-box;
+}
+.todo-item .status-indicator {
+  margin: 0;
+  padding: 0.5rem;
+  font-size: 0.75em;
+  text-transform: uppercase;
+  border-radius: 0.5em;
+  font-weight: bold;
+  color: #f2f0f9;
+}
+.todo-item .status-indicator.in-progress {
+  background: #bbb4b9;
+}
+.todo-item .status-indicator.complete {
+  background: #419f71;
+}
+.todo-item h3 {
+  margin: 0 1rem;
+  flex: 1;
+  text-align: left;
+  word-wrap: anywhere;
+}
+.todo-item .task-options {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.todo-item .task-options button {
+  margin: 0 0.5rem;
+  padding: 0.25rem 0.75rem;
+  color: #f2f0f9;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+.todo-item .task-options button.task-complete-btn {
+  background: #7ccaa4;
+}
+.todo-item .task-options button.task-reset-btn {
+  background: #ffa393;
+}
+.todo-item .task-options button.task-edit-btn {
+  background: #c6c0c6;
+}
+.todo-item .task-options button.task-delete-btn {
+  background: #f92600;
+}
+.todo-item .task-date {
+  margin: 0;
+  font-size: 0.75em;
+  text-align: right;
 }
 
 h1 {
@@ -94,29 +203,6 @@ h3 {
   color: #373737;
 }
 
-input {
-  font-size: 1.25em;
-  color: #373737;
-  border: 1px solid #bbb4b9;
-  border-right: none;
-  border-radius: 0.25rem 0 0 0.25rem;
-  outline: none;
-}
-input::placeholder {
-  color: #bbb4b9;
-  font-size: 0.75em;
-  opacity: 0.8;
-}
-
-button {
-  font-size: 1.125em;
-  background: #87d68d;
-  color: #f2f0f9;
-  border: none;
-  border-radius: 0 0.25rem 0.25rem 0;
-  cursor: pointer;
-}
-
 .desktop {
   display: block;
 }
@@ -125,7 +211,26 @@ button {
   display: none;
 }
 
+.hidden {
+  display: none !important;
+}
+
 @media screen and (max-width: 768px) {
+  main {
+    width: 90%;
+  }
+  .todo-item {
+    height: auto;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .task-options {
+    width: 100%;
+  }
+  .task-options .flex-row {
+    width: 100%;
+    justify-content: space-evenly;
+  }
   .desktop {
     display: none !important;
   }

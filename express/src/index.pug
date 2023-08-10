@@ -4,10 +4,16 @@ html(lang="en")
     body
         include include/_header
         main
-            p #[span#itemCount (Loading)] items in progress
-            .flex-row
+            p #[span#itemCount (Loading)] task(s) in progress
+            #taskAdder.flex-row
                 input#itemInput(placeholder="New task...", maxlength="100")
                 button#addItemBtn Add
-            p#infoText
+            p#infoText &nbsp;
+            .filter
+                h2 Filter Tasks
+                .filter-btns
+                    button(data-filter="") All
+                    button(data-filter="in-progress") In Progress
+                    button(data-filter="complete") Complete
             #todoList
         include include/_footer
