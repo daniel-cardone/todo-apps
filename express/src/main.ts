@@ -172,7 +172,7 @@ type TaskUpdateMethod = "complete" | "delete" | "reset";
         deleteBtn.addEventListener("click", () => {
             updateTask(todoListItem, "delete");
 
-            if (todoListItem.querySelector(".status-indicator")?.classList.contains("in-progress")) {
+            if (todoListItem.classList.contains("in-progress")) {
                 totalItems--;
                 updateItemCount();
             }

@@ -150,9 +150,8 @@
             });
         });
         deleteBtn.addEventListener("click", () => {
-            var _a;
             updateTask(todoListItem, "delete");
-            if ((_a = todoListItem.querySelector(".status-indicator")) === null || _a === void 0 ? void 0 : _a.classList.contains("in-progress")) {
+            if (todoListItem.classList.contains("in-progress")) {
                 totalItems--;
                 updateItemCount();
             }
