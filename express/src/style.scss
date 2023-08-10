@@ -133,6 +133,12 @@ main {
 #todoList {
   display: flex;
   flex-direction: column;
+  &.in-progress .todo-item.complete {
+    display: none !important;
+  }
+  &.complete .todo-item.in-progress {
+    display: none !important;
+  }
 }
 
 .todo-item {
@@ -152,12 +158,12 @@ main {
     border-radius: 0.5em;
     font-weight: bold;
     color: $base;
-    &.in-progress {
-      background: $gray;
-    }
-    &.complete {
-      background: $success;
-    }
+  }
+  &.in-progress .status-indicator {
+    background: $gray;
+  }
+  &.complete .status-indicator {
+    background: $success;
   }
   h3 {
     margin: 0 1rem;

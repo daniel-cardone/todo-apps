@@ -91,9 +91,9 @@
         if (taskId) {
             todoListItem.dataset.taskId = taskId;
         }
-        todoListItem.classList.add("todo-item");
+        todoListItem.classList.add("todo-item", taskStatus.replace(" ", "-"));
         todoListItem.innerHTML = `
-            <p class="status-indicator ${taskStatus.replace(" ", "-")}">${taskStatus}</p>
+            <p class="status-indicator">${taskStatus}</p>
             <h3>${taskName}</h3>
             <div class="task-options">
                 <div class="flex-row">
@@ -112,8 +112,8 @@
         const deleteBtn = todoListItem.querySelector(".task-delete-btn");
         completeBtn.addEventListener("click", () => {
             const statusIndicator = todoListItem.querySelector(".status-indicator");
-            statusIndicator.classList.remove("in-progress");
-            statusIndicator.classList.add("complete");
+            todoListItem.classList.remove("in-progress");
+            todoListItem.classList.add("complete");
             statusIndicator.textContent = "complete";
             resetBtn.classList.remove("hidden");
             completeBtn.classList.add("hidden");
@@ -123,8 +123,8 @@
         });
         resetBtn.addEventListener("click", () => {
             const statusIndicator = todoListItem.querySelector(".status-indicator");
-            statusIndicator.classList.remove("complete");
-            statusIndicator.classList.add("in-progress");
+            todoListItem.classList.remove("complete");
+            todoListItem.classList.add("in-progress");
             statusIndicator.textContent = "in progress";
             completeBtn.classList.remove("hidden");
             resetBtn.classList.add("hidden");
@@ -214,20 +214,8 @@
     });
     filterBtns.forEach(btn => {
         btn.addEventListener("click", () => {
-            for (const child of todoListContainer.children) {
-                const statusP = child.querySelector(".status-indicator");
-                const filterType = btn.dataset.filter || "";
-                if (filterType === "") {
-                    child.classList.remove("hidden");
-                    continue;
-                }
-                if (statusP.classList.contains(filterType)) {
-                    child.classList.remove("hidden");
-                }
-                else {
-                    child.classList.add("hidden");
-                }
-            }
+            todoListContainer.classList.remove(...todoListContainer.classList);
+            todoListContainer.classList.add(btn.dataset.filter || "");
         });
     });
     itemInput.addEventListener("keydown", () => {

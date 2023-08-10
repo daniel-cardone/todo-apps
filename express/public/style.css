@@ -124,6 +124,12 @@ main {
   display: flex;
   flex-direction: column;
 }
+#todoList.in-progress .todo-item.complete {
+  display: none !important;
+}
+#todoList.complete .todo-item.in-progress {
+  display: none !important;
+}
 
 .todo-item {
   padding: 1rem;
@@ -144,10 +150,10 @@ main {
   font-weight: bold;
   color: #f2f0f9;
 }
-.todo-item .status-indicator.in-progress {
+.todo-item.in-progress .status-indicator {
   background: #bbb4b9;
 }
-.todo-item .status-indicator.complete {
+.todo-item.complete .status-indicator {
   background: #419f71;
 }
 .todo-item h3 {
