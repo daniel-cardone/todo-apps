@@ -1,0 +1,32 @@
+﻿@inject Globals Globals
+
+<header>
+	<nav>
+		<h2>Select User:</h2>
+		<ul>
+			@for (int i = 0; i < userOptions.Length; i++)
+			{
+				int currentValue = i;
+				<li>
+					<button @onclick="@(() => SetUser(userOptions[currentValue]))">User @(currentValue + 1)</button>
+				</li>
+			}
+		</ul>
+	</nav>
+</header>
+<p>@Globals.Username</p>
+
+@code {
+
+	private string[] userOptions = { "user1", "user2", "user3" };
+
+	private void SetUser(string newUser)
+	{
+		Globals.Username = newUser;
+	}
+
+	protected override void OnInitialized()
+	{
+		SetUser(userOptions[0]);
+	}
+}
