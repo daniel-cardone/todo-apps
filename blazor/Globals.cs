@@ -1,4 +1,6 @@
 ﻿
+using blazor.Shared.Templates;
+
 namespace blazor
 {
 	public class Globals
@@ -22,9 +24,9 @@ namespace blazor
 			}
 		}
 
-		public static async Task<string> GetUserTasks(HttpClient Http, string username)
+		public static async Task<UserTasks> GetUserTasks(HttpClient Http, string username)
 		{
-            return await Http.GetStringAsync("tasks/" + username);
+            return await Http.GetFromJsonAsync<UserTasks>("tasks/" + username) ?? new();
 		}
 	}
 }

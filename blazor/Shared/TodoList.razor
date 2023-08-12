@@ -1,0 +1,49 @@
+﻿@implements IDisposable
+@inject Globals Globals
+@inject HttpClient Http
+@inject NavigationManager Navigator
+@using blazor.Shared.Templates
+@using System.Text.Json
+@using Microsoft.Data.Sqlite;
+
+@foreach (KeyValuePair<string, TaskItem> entry in userTasks.Tasks)
+{
+    <div class="todo-item @entry.Value.TaskStatus.Replace(" ", "-")" data-task-id="@entry.Key">
+        <p class="status-indicator">@entry.Value.TaskStatus</p>
+        <h3>@entry.Value.TaskName</h3>
+        <div class="task-options">
+            <div class="flex-row">
+                <button class="task-complete-btn">Complete</button>
+                <button class="task-reset-btn hidden">Reset</button>
+                <button class="task-edit-btn">Edit</button>
+                <button class="task-delete-btn">Delete</button>
+            </div>
+            <p class="task-date">@entry.Value.Date.ToString("MM/dd/yyyy")</p>
+        </div>
+    </div>
+}
+
+@code {
+    UserTasks userTasks = new();
+
+    protected override void OnInitialized()
+    {
+        Http.BaseAddress = new Uri(Navigator.BaseUri);
+        Globals.Notify += OnNotify;
+        OnNotify();
+    }
+
+    public void OnNotify()
+    {
+        InvokeAsync(async () =>
+        {
+            userTasks = await Globals.GetUserTasks(Http, Globals.Username);
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        Globals.Notify -= OnNotify;
+    }
+}

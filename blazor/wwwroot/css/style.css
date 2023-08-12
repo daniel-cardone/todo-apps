@@ -1,0 +1,269 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #f2f0f9;
+  font-family: "Quicksand", sans-serif;
+  overflow: auto;
+}
+
+nav {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  border-bottom: 1px solid #bbb4b9;
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+nav ul li {
+  height: 100%;
+  margin: 0;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+nav ul li button {
+  font-size: 1.25em;
+  border: 1px solid #bbb4b9;
+  border-radius: 0.5rem;
+  color: #a399a0;
+  background: #ece9eb;
+  cursor: pointer;
+}
+nav ul li button.active {
+  color: #f2f0f9;
+  background: #bbb4b9;
+}
+nav ul li button.active:hover {
+  background: #bbb4b9;
+}
+nav ul li button:hover {
+  background: #dfdcde;
+}
+
+main {
+  width: 80%;
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  text-align: center;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto;
+}
+
+.task-input-container {
+  height: 2em;
+}
+.task-input-container input {
+  font-size: 1.25em;
+  color: #373737;
+  border: 1px solid #bbb4b9;
+  border-right: none;
+  border-radius: 0.25rem 0 0 0.25rem;
+  outline: none;
+}
+.task-input-container input::placeholder {
+  color: #bbb4b9;
+  font-size: 0.75em;
+  opacity: 0.8;
+}
+.task-input-container button {
+  font-size: 1.125em;
+  background: #87d68d;
+  color: #f2f0f9;
+  border: none;
+  border-radius: 0 0.25rem 0.25rem 0;
+  cursor: pointer;
+}
+
+#infoText {
+  margin: 0.25rem;
+  color: #ff4d2d;
+}
+#infoText.success {
+  color: #419f71;
+}
+#infoText:empty:before {
+  content: " ";
+  white-space: pre;
+}
+
+.filter {
+  width: 100%;
+  text-align: center;
+}
+.filter .filter-btns {
+  margin: 0.75rem 0;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+.filter .filter-btns button {
+  padding: 0.25rem 0.75rem;
+  background: #bbb4b9;
+  color: #f2f0f9;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1.125em;
+  cursor: pointer;
+}
+
+#todoList {
+  display: flex;
+  flex-direction: column;
+}
+#todoList.in-progress .todo-item.complete {
+  display: none !important;
+}
+#todoList.complete .todo-item.in-progress {
+  display: none !important;
+}
+
+.todo-item {
+  padding: 1rem;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #ece9eb;
+  box-sizing: border-box;
+}
+.todo-item .status-indicator {
+  margin: 0;
+  padding: 0.5rem;
+  font-size: 0.75em;
+  text-transform: uppercase;
+  border-radius: 0.5em;
+  font-weight: bold;
+  color: #f2f0f9;
+}
+.todo-item.in-progress .status-indicator {
+  background: #bbb4b9;
+}
+.todo-item.complete .status-indicator {
+  background: #419f71;
+}
+.todo-item h3 {
+  margin: 0 1rem;
+  flex: 1;
+  text-align: left;
+  word-wrap: anywhere;
+}
+.todo-item .task-options {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.todo-item .task-options button {
+  margin: 0 0.5rem;
+  padding: 0.25rem 0.75rem;
+  color: #f2f0f9;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+.todo-item .task-options button.task-complete-btn {
+  background: #7ccaa4;
+}
+.todo-item .task-options button.task-reset-btn {
+  background: #ffa393;
+}
+.todo-item .task-options button.task-edit-btn {
+  background: #c6c0c6;
+}
+.todo-item .task-options button.task-delete-btn {
+  background: #f92600;
+}
+.todo-item .task-date {
+  margin: 0;
+  font-size: 0.75em;
+  text-align: right;
+}
+
+h1 {
+  margin: 1rem;
+  font-size: 2.5em;
+  color: #4da1a9;
+  text-align: center;
+}
+
+h2 {
+  margin: 0;
+  padding: 0;
+  color: #a399a0;
+  font-size: 1.25em;
+}
+
+h3 {
+  color: #373737;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+  nav {
+    padding: 0.5rem;
+    box-sizing: border-box;
+  }
+  nav h2 {
+    display: none;
+  }
+  nav ul, nav li {
+    flex: 1;
+  }
+  nav button {
+    font-size: 1em !important;
+    flex: 1;
+  }
+  main {
+    width: 90%;
+  }
+  .filter .filter-btns {
+    font-size: 1em;
+    gap: 0.5rem;
+  }
+  .todo-item {
+    padding: 0.25rem;
+    height: auto;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .todo-item h3 input, .todo-item h3 button {
+    width: 100%;
+    font-size: 1em;
+  }
+  .todo-item h3 button {
+    width: 40%;
+  }
+  .task-options {
+    width: 100%;
+  }
+  .task-options .flex-row {
+    width: 100%;
+    justify-content: space-evenly;
+  }
+  .desktop {
+    display: none !important;
+  }
+  .mobile {
+    display: block !important;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */

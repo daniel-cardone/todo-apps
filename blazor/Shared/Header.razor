@@ -8,13 +8,12 @@
 			{
 				int currentValue = i;
 				<li>
-					<button @onclick="@(() => SetUser(userOptions[currentValue]))">User @(currentValue + 1)</button>
+					<button class="user @(Globals.Username == userOptions[currentValue] ? "active" : "")" @onclick="@(() => SetUser(userOptions[currentValue]))">User @(currentValue + 1)</button>
 				</li>
 			}
 		</ul>
 	</nav>
 </header>
-<p>@Globals.Username</p>
 
 @code {
 

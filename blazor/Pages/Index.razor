@@ -1,34 +1,6 @@
 ﻿@page "/"
-@inject Globals Globals
-@inject HttpClient Http
-@inject NavigationManager Navigator
-@implements IDisposable
 
-<Header></Header>
-<h1>Hello, world!</h1>
-<p>@test</p>
-
-@code {
-    string test = "";
-
-    protected override void OnInitialized()
-    {
-        Http.BaseAddress = new Uri(Navigator.BaseUri);
-        Globals.Notify += OnNotify;
-        OnNotify();
-    }
-
-    public void OnNotify()
-    {
-        InvokeAsync(async () =>
-        {
-            test = await Globals.GetUserTasks(Http, Globals.Username);
-            StateHasChanged();
-        });
-    }
-
-    public void Dispose()
-    {
-        Globals.Notify -= OnNotify;
-    }
-}
+<Header />
+<main>
+    <TodoList />
+</main>
