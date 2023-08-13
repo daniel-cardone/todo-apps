@@ -140,12 +140,14 @@
                     <button>Update</button>
                 </div>
             `;
+            editBtn.classList.add("hidden");
             const newValueInput = h3.querySelector("input");
             const updateBtn = h3.querySelector("button");
             updateBtn.addEventListener("click", () => {
                 if (newValueInput.value.length < 1)
                     return;
                 h3.textContent = newValueInput.value;
+                editBtn.classList.remove("hidden");
                 renameTask(todoListItem, h3.textContent);
             });
         });

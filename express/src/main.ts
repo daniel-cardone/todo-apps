@@ -158,6 +158,7 @@ type TaskUpdateMethod = "complete" | "delete" | "reset";
                     <button>Update</button>
                 </div>
             `;
+            editBtn.classList.add("hidden");
 
             const newValueInput = h3.querySelector("input") as HTMLInputElement;
             const updateBtn = h3.querySelector("button") as HTMLButtonElement;
@@ -165,6 +166,7 @@ type TaskUpdateMethod = "complete" | "delete" | "reset";
                 if (newValueInput.value.length < 1) return;
 
                 h3.textContent = newValueInput.value;
+                editBtn.classList.remove("hidden");
                 renameTask(todoListItem, h3.textContent);
             });
         });
