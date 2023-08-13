@@ -6,25 +6,45 @@
 @using System.Text.Json
 @using Microsoft.Data.Sqlite;
 
-@foreach (KeyValuePair<string, TaskItem> entry in userTasks.Tasks)
-{
-    <div class="todo-item @entry.Value.TaskStatus.Replace(" ", "-")" data-task-id="@entry.Key">
-        <p class="status-indicator">@entry.Value.TaskStatus</p>
-        <h3>@entry.Value.TaskName</h3>
-        <div class="task-options">
-            <div class="flex-row">
-                <button class="task-complete-btn">Complete</button>
-                <button class="task-reset-btn hidden">Reset</button>
-                <button class="task-edit-btn">Edit</button>
-                <button class="task-delete-btn">Delete</button>
+<div id="todoList" class="@Globals.CurrentFilter">
+    @foreach (KeyValuePair<string, TaskItem> entry in userTasks.Tasks)
+    {
+        string uuid = entry.Key;
+        string taskName = entry.Value.TaskName;
+        string taskStatus = entry.Value.TaskStatus;
+        DateTime date = entry.Value.Date;
+        <div class="todo-item @taskStatus.Replace(" ", "-")">
+            <p class="status-indicator">@taskStatus</p>
+            <h3>
+                @if (tasksBeingEdited.Contains(uuid))
+                {
+                    <div class="task-input-container flex-row">
+                        <input maxlength="100" value="@taskName" @oninput="args => handleTaskNameUpdate(uuid, args.Value?.ToString() ?? string.Empty)" />
+                        <button @onclick="() => RenameTask(uuid)">Update</button>
+                    </div>
+                }
+                else
+                {
+                    @taskName
+                }
+            </h3>
+            <div class="task-options">
+                <div class="flex-row">
+                    <button class="task-complete-btn @(taskStatus == "complete" ? "hidden" : "")" @onclick='() => UpdateTask(uuid, "complete")'>Complete</button>
+                    <button class="task-reset-btn @(taskStatus == "complete" ? "" : "hidden")" @onclick='() => UpdateTask(uuid, "in progress")'>Reset</button>
+                    <button class="task-edit-btn" @onclick="() => tasksBeingEdited.Add(uuid)">Edit</button>
+                    <button class="task-delete-btn" @onclick="() => DeleteTask(uuid)">Delete</button>
+                </div>
+                <p class="task-date">@date.ToString("MM/dd/yyyy")</p>
             </div>
-            <p class="task-date">@entry.Value.Date.ToString("MM/dd/yyyy")</p>
         </div>
-    </div>
-}
+    }
+</div>
 
 @code {
-    UserTasks userTasks = new();
+    private UserTasks userTasks = new();
+    private HashSet<string> tasksBeingEdited = new();
+    private Dictionary<string, string> tasksToUpdate = new();
 
     protected override void OnInitialized()
     {
@@ -37,13 +57,58 @@
     {
         InvokeAsync(async () =>
         {
-            userTasks = await Globals.GetUserTasks(Http, Globals.Username);
+            userTasks = await Globals.FetchUserTasks(Http, Globals.Username);
             StateHasChanged();
+            Globals.InvokeSecondaryNotifier();
         });
     }
 
     public void Dispose()
     {
         Globals.Notify -= OnNotify;
+    }
+
+    private void handleTaskNameUpdate(string uuid, string value)
+    {
+        tasksToUpdate[uuid] = value;
+    }
+
+    private async void UpdateTask(string uuid, string newStatus)
+    {
+        bool success = await Globals.UpdateUserTask(Http, Globals.Username, uuid, newStatus);
+
+        if (success)
+        {
+            Globals.InvokeNotifier();
+        }
+    }
+
+    private async void RenameTask(string uuid)
+    {
+        string? newName = null;
+        tasksToUpdate.TryGetValue(uuid, out newName);
+        if (newName == null)
+        {
+            return;
+        }
+
+        Console.WriteLine(newName);
+        bool success = await Globals.RenameUserTask(Http, Globals.Username, uuid, newName);
+
+        if (success)
+        {
+            tasksBeingEdited.Remove(uuid);
+            Globals.InvokeNotifier();
+        }
+    }
+
+    private async void DeleteTask(string uuid)
+    {
+        bool success = await Globals.DeleteUserTask(Http, Globals.Username, uuid);
+
+        if (success)
+        {
+            Globals.InvokeNotifier();
+        }
     }
 }

@@ -1,0 +1,29 @@
+﻿@implements IDisposable
+@inject Globals Globals
+@inject IJSRuntime JsRuntime
+
+<p>@inProgressTasks task@(inProgressTasks == 1 ? "" : "s") in progress</p>
+
+@code {
+    private int inProgressTasks = 0;
+
+    protected override void OnInitialized()
+    {
+        Globals.SecondaryNotify += OnNotify;
+        OnNotify();
+    }
+
+    public void OnNotify()
+    {
+        InvokeAsync(async () =>
+        {
+            inProgressTasks = await JsRuntime.InvokeAsync<int>("getTotalInProgressTasks");
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        Globals.SecondaryNotify -= OnNotify;
+    }
+}

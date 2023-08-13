@@ -1,0 +1,32 @@
+﻿@inject Globals Globals
+@inject HttpClient Http
+@inject NavigationManager Navigator
+
+
+<div class="flex-row task-input-container">
+	<input placeholder="New task..." maxlength="100" @bind="taskName" />
+	<button @onclick="AddTask">Add</button>
+</div>
+
+@code {
+	private string taskName = "";
+
+	protected override void OnInitialized()
+	{
+		Http.BaseAddress = new Uri(Navigator.BaseUri);
+	}
+
+	private async void AddTask()
+	{
+		if (taskName == "") return;
+		string newTaskName = taskName;
+		taskName = "";
+
+		bool success = await Globals.AddNewTask(Http, Globals.Username, newTaskName);
+
+		if (success)
+		{
+			Globals.InvokeNotifier();
+		}
+	}
+}

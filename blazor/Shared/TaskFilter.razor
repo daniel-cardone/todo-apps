@@ -1,0 +1,10 @@
+﻿@inject Globals Globals
+
+<div class="filter">
+	<h2>Filter Tasks</h2>
+	<div class="filter-btns">
+		<button @onclick='() => Globals.CurrentFilter = ""'>All</button>
+		<button @onclick='() => Globals.CurrentFilter = "in-progress"'>In Progress</button>
+		<button @onclick='() => Globals.CurrentFilter = "complete"'>Complete</button>
+	</div>
+</div>

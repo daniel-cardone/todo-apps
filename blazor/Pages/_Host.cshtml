@@ -27,5 +27,10 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    <script>
+        function getTotalInProgressTasks() {
+            return document.querySelectorAll(".todo-item.in-progress").length;
+        }
+    </script>
 </body>
 </html>
