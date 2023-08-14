@@ -19,6 +19,7 @@ func main() {
 	}
 	defer db.Close()
 
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	router.RedirectTrailingSlash = true
 
