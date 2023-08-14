@@ -1,14 +1,15 @@
 ﻿using blazor.Shared.Templates;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.Sqlite;
+using Npgsql;
+using System.Text;
 using System.Text.Json;
 
 namespace blazor.Controllers
 {
     public class DataController : Controller
     {
-        private readonly string _connectionString = "Data Source=Data/userdata.db";
+        private readonly string _connectionString = System.IO.File.ReadAllText("db_secret.txt", Encoding.UTF8);
 
         [HttpGet]
         [Route("/tasks/{username}")]
@@ -16,12 +17,12 @@ namespace blazor.Controllers
         {
             UserTasks userTasks = new();
 
-            using (var connection = new SqliteConnection(_connectionString))
+            using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
 
                 string query = "SELECT * FROM Tasks WHERE Username = @Username ORDER BY Date DESC";
-                using var command = new SqliteCommand(query, connection);
+                using var command = new NpgsqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Username", username);
                 using var reader = command.ExecuteReader();
 
@@ -64,12 +65,12 @@ namespace blazor.Controllers
             DateTime date = DateTime.Now;
             string uuid = Guid.NewGuid().ToString();
 
-            using (var connection = new SqliteConnection(_connectionString))
+            using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
 
                 string query = "INSERT INTO Tasks (Username, Uuid, TaskName, TaskStatus, Date) Values (@Username, @Uuid, @TaskName, @TaskStatus, @Date)";
-                using var command = new SqliteCommand(query, connection);
+                using var command = new NpgsqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Username", username);
                 command.Parameters.AddWithValue("@Uuid", uuid);
                 command.Parameters.AddWithValue("@TaskName", taskName);
@@ -98,12 +99,12 @@ namespace blazor.Controllers
                 return BadRequest();
 			}
 
-			using (var connection = new SqliteConnection(_connectionString))
+			using (var connection = new NpgsqlConnection(_connectionString))
 			{
 				connection.Open();
 
 				string query = "UPDATE Tasks SET TaskStatus = @NewStatus WHERE Username = @Username AND Uuid = @Uuid";
-				using var command = new SqliteCommand(query, connection);
+				using var command = new NpgsqlCommand(query, connection);
 				command.Parameters.AddWithValue("@NewStatus", newStatus);
 				command.Parameters.AddWithValue("@Username", username);
 				command.Parameters.AddWithValue("@Uuid", uuid);
@@ -130,12 +131,12 @@ namespace blazor.Controllers
                 return BadRequest();
             }
 
-            using (var connection = new SqliteConnection(_connectionString))
+            using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
 
                 string query = "UPDATE Tasks SET TaskName = @NewName WHERE Username = @Username AND Uuid = @Uuid";
-                using var command = new SqliteCommand(query, connection);
+                using var command = new NpgsqlCommand(query, connection);
                 command.Parameters.AddWithValue("@NewName", newName);
                 command.Parameters.AddWithValue("@Username", username);
                 command.Parameters.AddWithValue("@Uuid", uuid);
@@ -161,12 +162,12 @@ namespace blazor.Controllers
                 return BadRequest();
             }
 
-            using (var connection = new SqliteConnection(_connectionString))
+            using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
 
                 string query = "DELETE FROM Tasks WHERE Username = @Username AND Uuid = @Uuid";
-                using var command = new SqliteCommand(query, connection);
+                using var command = new NpgsqlCommand(query, connection);
                 command.Parameters.AddWithValue("@Username", username);
                 command.Parameters.AddWithValue("@Uuid", uuid);
                 int affectedRows = command.ExecuteNonQuery();

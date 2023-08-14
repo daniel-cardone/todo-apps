@@ -4,6 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>8acd8888-7a87-460a-b7d0-c870e6c4357f</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,11 +13,14 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.SassCompiler" Version="1.64.2" />
+    <PackageReference Include="Microsoft.Azure.SignalR" Version="1.21.2" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.10" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Npgsql" Version="7.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +29,12 @@
 
   <ItemGroup>
     <None Include="wwwroot\scss\style.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="db_secret.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
