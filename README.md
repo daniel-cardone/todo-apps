@@ -16,7 +16,7 @@ For consistency, each app shares the same stylesheet, written in SCSS
     - Entirely server-side rendered (rather than WebAssembly)
     - Uses Postres database hosted on Supabase
 - `express`
-    - UI written using Pug, Scss, and TyPescript
+    - UI written using Pug, Scss, and TypeScript
     - Backend written in Node.js using express
     - Pre-compiled client-side rendering
     - Uses local .json file as a database
