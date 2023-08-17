@@ -1,4 +1,4 @@
-# express
+# blazor
 ### Technologies
 - `Blazor`: Web framework for creating reactive apps using HTML with C#
 - `ASP.NET`: Server-side C# framework for serving the page as well as API endpoints
